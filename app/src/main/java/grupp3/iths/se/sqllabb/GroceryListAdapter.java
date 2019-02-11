@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -14,16 +15,34 @@ public class GroceryListAdapter extends RecyclerView.Adapter <GroceryListAdapter
     class GroceryViewModel extends RecyclerView.ViewHolder {
         private final TextView GroceryItemView;
         private final TextView GroceryQuantity;
+        public RelativeLayout viewBackground, viewForeground;
 
         private GroceryViewModel(View itemView) {
             super(itemView);
             GroceryItemView = itemView.findViewById(R.id.textView);
             GroceryQuantity = itemView.findViewById(R.id.number_textView);
+            viewBackground = itemView.findViewById(R.id.view_background);
+            viewForeground = itemView.findViewById(R.id.view_foreground);
         }
+    }
+
+    public void removeItem (int position) {
+        mGroceries.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public void restoreItem (Grocery grocery, int position) {
+        mGroceries.add(position, grocery);
+        notifyItemInserted(position);
     }
 
     private final LayoutInflater mInflater;
     private List<Grocery> mGroceries; // Cached copy of words
+
+    public GroceryListAdapter(LayoutInflater mInflater, List<Grocery> mGroceries) {
+        this.mInflater = mInflater;
+        this.mGroceries = mGroceries;
+    }
 
     GroceryListAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
@@ -37,6 +56,8 @@ public class GroceryListAdapter extends RecyclerView.Adapter <GroceryListAdapter
 
     @Override
     public void onBindViewHolder(GroceryViewModel holder, int position) {
+
+
         if (mGroceries != null) {
             Grocery current = mGroceries.get(position);
             holder.GroceryItemView.setText(current.getmGroceryName());

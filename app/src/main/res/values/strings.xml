@@ -7,5 +7,7 @@
     <string name="button_save">Save</string>
     <string name="empty_not_saved">Grocery not saved because it is empty.</string>
     <string name="sorty_by_quantity">Sorty by quantity</string>
+    <string name="todo">TODO</string>
+    <string name="delete">Delete</string>
 
 </resources>
