@@ -26,6 +26,13 @@ public class GroceryListAdapter extends RecyclerView.Adapter <GroceryListAdapter
         }
     }
 
+    private final LayoutInflater mInflater;
+    private List<Grocery> mGroceries; // Cached copy of words
+
+    public Grocery getGroceryAtPosition(int position){
+        return mGroceries.get(position);
+    }
+
     public void removeItem (int position) {
         mGroceries.remove(position);
         notifyItemRemoved(position);
@@ -36,8 +43,6 @@ public class GroceryListAdapter extends RecyclerView.Adapter <GroceryListAdapter
         notifyItemInserted(position);
     }
 
-    private final LayoutInflater mInflater;
-    private List<Grocery> mGroceries; // Cached copy of words
 
     public GroceryListAdapter(LayoutInflater mInflater, List<Grocery> mGroceries) {
         this.mInflater = mInflater;

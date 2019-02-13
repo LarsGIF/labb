@@ -25,6 +25,9 @@ public class GroceryViewModel extends AndroidViewModel {
         mRepository.insert(grocery);
     }
 
+    public void delete(Grocery grocery){
+        mRepository.delete(grocery);
+    }
     LiveData<List<Grocery>> getAllGroceries() {
         return mAllGroceries;
     }

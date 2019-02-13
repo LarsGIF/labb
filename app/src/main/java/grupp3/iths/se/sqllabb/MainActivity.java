@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
     private CoordinatorLayout rootLayout;
     private RecyclerView recyclerView;
     private List<Grocery> groceries;
-    private GroceryListAdapter groceryListAdapter;
+    private GroceryListAdapter adapter;
     public static final int NEW_WORD_ACTIVITY_REQUEST_CODE = 1;
 
 
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
         recyclerView = findViewById(R.id.recyclerview);
         rootLayout = findViewById(R.id.rootlayout);
 
-        final GroceryListAdapter adapter = new GroceryListAdapter(this);
+        adapter = new GroceryListAdapter(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
@@ -117,18 +117,23 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof GroceryListAdapter.GroceryViewModel) {
+            groceries = mGroceryViewModel.getAllGroceries().getValue();
             String grocery = groceries.get(viewHolder.getAdapterPosition()).getmGroceryName();
+
+            Grocery myGrocery = adapter.getGroceryAtPosition(position);
 
             final Grocery deletedItem = groceries.get(viewHolder.getAdapterPosition());
             final int deleteIndex = viewHolder.getAdapterPosition();
 
-            groceryListAdapter.removeItem(deleteIndex);
+            mGroceryViewModel.delete(myGrocery);
 
-            Snackbar snackbar = Snackbar.make(rootLayout, grocery + " removed from cart!", Snackbar.LENGTH_LONG);
+            //adapter.removeItem(deleteIndex);
+
+            Snackbar snackbar = Snackbar.make(rootLayout, grocery + " removed from shopping list!", Snackbar.LENGTH_LONG);
             snackbar.setAction("UNDO", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    groceryListAdapter.restoreItem(deletedItem, deleteIndex);
+                    adapter.restoreItem(deletedItem, deleteIndex);
                 }
             });
             snackbar.setActionTextColor(Color.YELLOW);

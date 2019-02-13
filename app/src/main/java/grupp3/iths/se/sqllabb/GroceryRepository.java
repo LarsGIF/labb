@@ -25,7 +25,11 @@ public class GroceryRepository {
         new insertAsyncTask(mGroceryDao).execute(grocery);
     }
 
-    private static class insertAsyncTask extends AsyncTask<Grocery, Void, Void> {
+    public void delete(Grocery grocery){
+        new deleteAsyncTask(mGroceryDao).execute(grocery);
+    }
+
+    private static class insertAsyncTask extends android.os.AsyncTask<Grocery, Void, Void> {
 
         private GroceryDao mAsyncTaskDao;
 
@@ -39,6 +43,24 @@ public class GroceryRepository {
             return null;
         }
     }
+    private static class deleteAsyncTask extends AsyncTask<Grocery, Void, Void> {
 
+        private GroceryDao mAsyncTaskDao;
+
+        deleteAsyncTask(GroceryDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Grocery... params) {
+            mAsyncTaskDao.delete(params[0]);
+            return null;
+        }
+    }
+
+
+    public GroceryDao getGroceryDao(){
+        return mGroceryDao;
+    }
 
 }
